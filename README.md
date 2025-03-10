@@ -1,0 +1,1 @@
+The tithe-extractor library includes functions to request, process, and analyze Scryfall API data.
