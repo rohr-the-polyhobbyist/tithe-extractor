@@ -19,7 +19,6 @@ def make_api_request(url, params=None, headers=None, timeout=10):
         print(f"An error occurred: {e}")
         return None
 
-
 def get_bulk_data_metadata(CACHE_DIR = 'cache/', force=False):
     """Get the Scryfall bulk data metadata and save it to a file.
 
@@ -69,7 +68,7 @@ def get_bulk_data_metadata(CACHE_DIR = 'cache/', force=False):
         bulk_data_metadata = json.load(open(BULK_METADATA_PATH, "r", encoding="utf-8"))
         return bulk_data_metadata
 
-def get_bulk_data_info(card_type="oracle_cards", BULK_METADATA_PATH='cache/bulk-metadata.json'):
+def get_bulk_data_info(card_type="oracle_cards", BULK_METADATA_PATH='cache/bulk-data.json'):
     """Get the Scryfall bulk data metadata for the card type(s) provided.
 
     Args:
