@@ -19,7 +19,7 @@ def make_api_request(url, params=None, headers=None, timeout=10):
         print(f"An error occurred: {e}")
         return None
 
-def get_bulk_data_metadata(DATA_CACH_DIR = None, force=False):
+def get_bulk_data_metadata(DATA_CACHE_DIR = None, force=False):
     """Get the Scryfall bulk data metadata and save it to a file.
 
     Args:
