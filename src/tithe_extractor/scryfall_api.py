@@ -35,7 +35,7 @@ def get_bulk_data_metadata(DATA_CACHE_DIR = None, force=False):
     else:
         from tithe_extractor.constants import DATA_CACHE_DIR
     # Constants
-    BULK_METADATA_PATH = os.path.join(DATA_CACHE_DIR, "bulk-data.json")
+    BULK_METADATA_PATH = os.path.join(DATA_CACHE_DIR, "metadata.json")
 
     # Check if the cache directory exists, if not create it
     if not os.path.exists(DATA_CACHE_DIR):
@@ -86,7 +86,7 @@ def get_bulk_data_info(card_type="oracle_cards", BULK_METADATA_PATH=None):
     import json
     if BULK_METADATA_PATH is None:
         from tithe_extractor.constants import DATA_CACHE_DIR
-        BULK_METADATA_PATH = os.path.join(DATA_CACHE_DIR, "bulk-data.json")
+        BULK_METADATA_PATH = os.path.join(DATA_CACHE_DIR, "metadata.json")
         
     # Error check the card_type variable
     if not os.path.exists(BULK_METADATA_PATH):
@@ -114,7 +114,7 @@ def get_bulk_data_info(card_type="oracle_cards", BULK_METADATA_PATH=None):
                     bulk_data_info[element] = meta_data
         return bulk_data_info
 
-def get_card_data_gzip():
+def get_card_data_gzip(download_url, DATA_CACHE_DIR=None, force=False):
     """Get the Scryfall bulk data and save it to a file.
 
     Args:
@@ -125,5 +125,45 @@ def get_card_data_gzip():
     Returns:
         response (response.request): The response object from the request.
     """
-    # Empty function to be implemented later
+    import os
+    import requests
+    import gzip
+    from tithe_extractor.constants import HEADERS, TIMEOUT
+    from tithe_extractor.scryfall_api import make_api_request
+    if DATA_CACHE_DIR is None:
+        from tithe_extractor.constants import DATA_CACHE_DIR
+    
+    # Check if the cache directory exists, if not create it
+    if not os.path.exists(DATA_CACHE_DIR):
+        os.makedirs(DATA_CACHE_DIR)
+    
+    # Get the filename from the URL
+    filename = download_url.split("/")[-1]
+    path = os.path.join(DATA_CACHE_DIR, filename)
+    # Check if the file exists, if not create it
+    if not os.path.exists(path) or force:
+        # Make the request
+        response = make_api_request(download_url, headers=HEADERS, timeout=TIMEOUT)
+        if response.status_code == 200:
+            print("Request successful.")
+
+            # Save the response to a file
+            with open(path, "wb") as f:
+                f.write(gzip.decompress(response.content))
+                print("Data saved to file.")
+                return response
+        elif response.status_code == 404:
+            print(
+                "Something went wrong. The requested resource was not found. Error 404."
+            )
+        elif response.status_code == 429:
+            print("Rate limit exceeded. Please wait and try again later.")
+        elif response.status_code == 503:
+            print("Service unavailable. Please try again later.")
+        elif response.status_code.startswith("5"):
+            print("Server error. Please try again later.")
+        elif response.status_code.startswith("4"):
+            print("Client error. Please check the request and try again.")
+    else:
+        print(f"File already exists.")
     return None
