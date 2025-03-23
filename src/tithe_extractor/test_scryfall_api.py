@@ -3,8 +3,8 @@ Unit tests for scryfall_api.py
 """
 import unittest
 
-from scryfall_api import make_api_request, get_bulk_data_metadata, get_bulk_data_info
-from constants import SCRYFALL_BULK_DATA_URL, HEADERS, TIMEOUT
+from tithe_extractor.scryfall_api import make_api_request, get_bulk_data_metadata, get_bulk_data_info
+from tithe_extractor.constants import SCRYFALL_BULK_DATA_URL, HEADERS, TIMEOUT
 
 class TestBulkDataRequest(unittest.TestCase):
     # # Unit testing database connections is goofy, but not cool.
