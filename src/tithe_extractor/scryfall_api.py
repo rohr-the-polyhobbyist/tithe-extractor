@@ -29,7 +29,7 @@ def get_bulk_data_metadata(CACHE_DIR = 'cache/', force=False):
     """
     import os
     import json
-    from constants import SCRYFALL_BULK_DATA_URL, HEADERS, TIMEOUT
+    from tithe_extractor.constants import SCRYFALL_BULK_DATA_URL, HEADERS, TIMEOUT
 
     # Constants
     BULK_METADATA_PATH = os.path.join(CACHE_DIR, "bulk-data.json")
