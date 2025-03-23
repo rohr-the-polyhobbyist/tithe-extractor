@@ -19,7 +19,7 @@ def make_api_request(url, params=None, headers=None, timeout=10):
         print(f"An error occurred: {e}")
         return None
 
-def get_bulk_data_metadata(CACHE_DIR = 'cache/', force=False):
+def get_bulk_data_metadata(DATA_CACH_DIR = None, force=False):
     """Get the Scryfall bulk data metadata and save it to a file.
 
     Args:
@@ -30,13 +30,16 @@ def get_bulk_data_metadata(CACHE_DIR = 'cache/', force=False):
     import os
     import json
     from tithe_extractor.constants import SCRYFALL_BULK_DATA_URL, HEADERS, TIMEOUT
-
+    if DATA_CACHE_DIR is None:
+        DATA_CACHE_DIR = 'data/cache/'
+    else:
+        from tithe_extractor.constants import DATA_CACHE_DIR
     # Constants
-    BULK_METADATA_PATH = os.path.join(CACHE_DIR, "bulk-data.json")
+    BULK_METADATA_PATH = os.path.join(DATA_CACHE_DIR, "bulk-data.json")
 
     # Check if the cache directory exists, if not create it
-    if not os.path.exists(CACHE_DIR):
-        os.makedirs(CACHE_DIR)
+    if not os.path.exists(DATA_CACHE_DIR):
+        os.makedirs(DATA_CACHE_DIR)
 
     # Check if the bulk-data.json file exists, if not create it
     if not os.path.exists(BULK_METADATA_PATH) or force:
@@ -68,7 +71,7 @@ def get_bulk_data_metadata(CACHE_DIR = 'cache/', force=False):
         bulk_data_metadata = json.load(open(BULK_METADATA_PATH, "r", encoding="utf-8"))
         return bulk_data_metadata
 
-def get_bulk_data_info(card_type="oracle_cards", BULK_METADATA_PATH='cache/bulk-data.json'):
+def get_bulk_data_info(card_type="oracle_cards", BULK_METADATA_PATH=None):
     """Get the Scryfall bulk data metadata for the card type(s) provided.
 
     Args:
@@ -81,7 +84,10 @@ def get_bulk_data_info(card_type="oracle_cards", BULK_METADATA_PATH='cache/bulk-
     """
     import os
     import json
-
+    if BULK_METADATA_PATH is None:
+        from tithe_extractor.constants import DATA_CACHE_DIR
+        BULK_METADATA_PATH = os.path.join(DATA_CACHE_DIR, "bulk-data.json")
+        
     # Error check the card_type variable
     if not os.path.exists(BULK_METADATA_PATH):
         raise FileNotFoundError("Bulk data metadata does not exist.")

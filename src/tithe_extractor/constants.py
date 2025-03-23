@@ -6,6 +6,7 @@ SCRYFALL_BULK_DATA_URL = "https://api.scryfall.com/bulk-data"
 HEADERS = {"user-agent": "tithe-extractor/0.1.0", "Accept": "application/json"}
 TIMEOUT = 10
 FORCE = False
+DATA_CACHE_DIR = "data/cache/"
 # Constants - not sure if this pathing will be correct - may need to be specified by user/project
 # MODULE_DIR = os.path.dirname(os.path.abspath(__file__))
 # sp_dir = os.path.split(MODULE_DIR)[0]
