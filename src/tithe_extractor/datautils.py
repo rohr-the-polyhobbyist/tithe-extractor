@@ -60,3 +60,18 @@ def load_card_unzipped_data(file_name, DATA_CACHE_DIR=None):
     print(f"Extracted {line_count} JSON objects with {err_count} errors.")
 
     return extracted_objs
+
+def load_raw_cards_data(path):
+    """"
+    Load the raw cards data from the specified path and cast the columns to the correct data types to match the original data loaded from csv.
+    ARGS:
+    path (str): The path to the raw cards csv.
+    RETURNS:
+    df (pd.DataFrame): The raw cards data.
+    """
+    # Load the data
+    df = pd.read_csv(path, keep_default_na=False)
+    # Cast the edhrec_rank column to float
+    df['edhrec_rank'] = df['edhrec_rank'].replace('', np.nan) # replace empty strings with NaN
+    df['edhrec_rank'] = df['edhrec_rank'].astype(float)
+    return df
