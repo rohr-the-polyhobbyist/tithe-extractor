@@ -69,6 +69,7 @@ def load_raw_cards_data(path):
     RETURNS:
     df (pd.DataFrame): The raw cards data.
     """
+    import pandas as pd
     # Load the data
     df = pd.read_csv(path, keep_default_na=False)
     # Cast the edhrec_rank column to float
